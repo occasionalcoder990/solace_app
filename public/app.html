@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Solace</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Chat Screen -->
+    <div class="screen active" id="chat-screen">
+        <div class="chat-header">
+            <h2>Your Companion</h2>
+            <div class="status">Always here, always listening</div>
+            <div class="chat-actions">
+                <a href="dashboard.html" class="action-btn" title="Your Journey">📊</a>
+                <button class="action-btn" onclick="logout()" title="Sign Out">🚪</button>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="messages">
+            <!-- Messages will be loaded here -->
+        </div>
+        
+        <div class="chat-input">
+            <textarea id="message-input" placeholder="Share whatever is on your mind... I'm here to listen 💙" rows="1"></textarea>
+            <button id="send-btn" class="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        console.log('🔥 JavaScript is working!');
+        
+        // Simple chat functionality
+        let authToken = localStorage.getItem('solace_token');
+        
+        async function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+            
+            addUserMessage(message);
+            messageInput.value = '';
+            
+            showTypingIndicator();
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ message })
+                });
+                
+                const result = await response.json();
+                removeTypingIndicator();
+                
+                if (response.ok) {
+                    addCompanionMessage(result.response);
+                } else {
+                    addCompanionMessage("I'm sorry, I'm having trouble connecting right now. Please try again.");
+                }
+                
+            } catch (error) {
+                console.error('Chat error:', error);
+                removeTypingIndicator();
+                addCompanionMessage("I'm sorry, I'm having trouble connecting right now. Please try again.");
+            }
+        }
+        
+        function addUserMessage(message) {
+            const messagesContainer = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            messageDiv.innerHTML = `<div class="message-content">${message}</div>`;
+            messagesContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        function addCompanionMessage(message) {
+            const messagesContainer = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message companion-message';
+            messageDiv.innerHTML = `<div class="message-content">${message}</div>`;
+            messagesContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.innerHTML = `<div class="message-content">Thinking...</div>`;
+            messagesContainer.appendChild(typingDiv);
+            scrollToBottom();
+        }
+        
+        function removeTypingIndicator() {
+            const typingIndicator = document.querySelector('.typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        function scrollToBottom() {
+            const messagesContainer = document.getElementById('messages');
+            if (messagesContainer) {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('solace_token');
+            window.location.href = 'index.html';
+        }
+
+        async function initialize() {
+            try {
+                // Check authentication
+                if (!authToken) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Check onboarding status
+                const profileResponse = await fetch('/api/profile', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (!profileResponse.ok) {
+                    localStorage.removeItem('solace_token');
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                const profileData = await profileResponse.json();
+                
+                // If onboarding not complete, redirect to questionnaire
+                if (!profileData.user.onboardingComplete) {
+                    window.location.href = 'journey.html?authenticated=true';
+                    return;
+                }
+                
+                // Initialize chat
+                const sendBtn = document.getElementById('send-btn');
+                const messageInput = document.getElementById('message-input');
+                
+                if (sendBtn) {
+                    sendBtn.addEventListener('click', () => sendMessage());
+                }
+                
+                if (messageInput) {
+                    messageInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            sendMessage();
+                        }
+                    });
+                    messageInput.focus();
+                }
+                
+            } catch (error) {
+                console.error('Initialization failed:', error);
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html>

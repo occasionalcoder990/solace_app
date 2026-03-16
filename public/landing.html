@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solace - Your Personal Companion</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Landing Page -->
+    <div class="landing-page">
+        <div class="homepage-container">
+            <!-- Simple Header -->
+            <header class="simple-header">
+                <div class="brand">
+                    <span class="brand-icon">🤗</span>
+                    <span class="brand-text">Solace</span>
+                </div>
+                <div class="header-actions">
+                    <a href="auth.html" class="header-btn">Sign In</a>
+                    <a href="auth.html?mode=register" class="header-btn primary">Get Started</a>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="homepage-main">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="badge-text">Your Safe Space Awaits</span>
+                    </div>
+                    
+                    <h1 class="main-title">
+                        Sometimes you just need someone who 
+                        <span class="highlight">truly listens</span>
+                    </h1>
+                    
+                    <p class="main-description">
+                        Share your thoughts, feelings, and experiences with an AI companion that understands you deeply. No judgment, no pressure—just genuine support whenever you need it.
+                    </p>
+
+                    <div class="trust-indicators">
+                        <div class="trust-item">
+                            <span class="trust-icon">🔒</span>
+                            <span class="trust-text">100% Private</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">🤖</span>
+                            <span class="trust-text">AI-Powered</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">💙</span>
+                            <span class="trust-text">Always Available</span>
+                        </div>
+                    </div>
+
+                    <div class="cta-section">
+                        <a href="journey.html" class="main-cta">
+                            <span class="cta-text">Start Your Journey</span>
+                            <span class="cta-icon">✨</span>
+                        </a>
+                        <p class="cta-note">Try it now - no account needed to start</p>
+                    </div>
+                </div>
+
+                <!-- Visual Element -->
+                <div class="hero-visual">
+                    <div class="conversation-preview">
+                        <div class="chat-bubble user-bubble">
+                            "I've been feeling really overwhelmed lately..."
+                        </div>
+                        <div class="chat-bubble ai-bubble">
+                            "I hear you. That sounds really difficult. Would you like to talk about what's been weighing on your mind?"
+                        </div>
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Simple Footer -->
+            <footer class="simple-footer">
+                <p class="footer-text">Your conversations are completely private and secure</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is already logged in
+        const token = localStorage.getItem('solace_token');
+        if (token) {
+            // Redirect to dashboard if already logged in
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>

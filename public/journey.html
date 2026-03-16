@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Journey - Solace</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Question Flow Screen -->
+    <div id="question-flow" class="screen active">
+        <div class="question-header">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <h2 class="question-title">Please answer these questions to help us know you deeply for a truly personal experience</h2>
+        </div>
+
+        <div class="question-container">
+            <div class="question-card active" data-question="0">
+                <h3 class="question-text">What should we call you?</h3>
+                <div class="question-options">
+                    <input type="text" class="text-input" placeholder="Enter your preferred name..." data-type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="question-navigation">
+            <a href="landing.html" class="nav-btn back-btn">← Back to Home</a>
+            <button class="nav-btn prev-btn" onclick="previousQuestion()" style="display: none;">Previous</button>
+            <button class="nav-btn next-btn" onclick="nextQuestion()" disabled>Continue</button>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen">
+        <div class="loading-container">
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <h2 class="loading-title">Creating Your Personal Experience</h2>
+            <p class="loading-subtitle">Analyzing your responses to craft the perfect companion for you...</p>
+            <div class="loading-progress-container">
+                <div class="loading-progress-bar">
+                    <div class="loading-progress-fill"></div>
+                </div>
+            </div>
+            <div class="loading-steps">
+                <div class="step active" data-step="1">
+                    <span class="step-icon">🧠</span>
+                    <span class="step-text">Understanding your personality</span>
+                </div>
+                <div class="step" data-step="2">
+                    <span class="step-icon">💭</span>
+                    <span class="step-text">Analyzing communication style</span>
+                </div>
+                <div class="step" data-step="3">
+                    <span class="step-icon">🤗</span>
+                    <span class="step-text">Personalizing your companion</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personality Summary Screen -->
+    <div id="personality-summary" class="screen">
+        <div class="personality-container">
+            <div class="personality-header">
+                <div class="personality-icon">✨</div>
+                <h2 class="personality-title">Here's What Makes You Unique</h2>
+                <p class="personality-subtitle">Based on your responses, I've learned about your personality and how you prefer to connect</p>
+            </div>
+
+            <div class="insights-grid">
+                <div class="insight-card communication-style">
+                    <div class="insight-header">
+                        <div class="insight-icon">💬</div>
+                        <h3 class="insight-title">Your Communication Style</h3>
+                    </div>
+                    <div class="insight-content">
+                        <p class="insight-text" id="communication-insight">Loading your communication preferences...</p>
+                    </div>
+                </div>
+
+                <div class="insight-card emotional-needs">
+                    <div class="insight-header">
+                        <div class="insight-icon">💙</div>
+                        <h3 class="insight-title">Your Emotional Needs</h3>
+                    </div>
+                    <div class="insight-content">
+                        <p class="insight-text" id="emotional-insight">Understanding what you need most...</p>
+                    </div>
+                </div>
+
+                <div class="insight-card uniqueness full-width">
+                    <div class="insight-header">
+                        <div class="insight-icon">🌟</div>
+                        <h3 class="insight-title">What Makes You Special</h3>
+                    </div>
+                    <div class="insight-content">
+                        <div class="uniqueness-factors" id="uniqueness-factors">
+                            <div class="loading-placeholder">Discovering your unique qualities...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="personality-actions">
+                <button class="continue-btn" onclick="continueToGrowthPath()">
+                    <span class="btn-text">See Your Growth Journey</span>
+                    <span class="btn-icon">→</span>
+                </button>
+                <p class="privacy-note">
+                    <span class="privacy-icon">🔒</span>
+                    Your insights are private and stored securely on your device
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Growth Path Screen -->
+    <div id="growth-path" class="screen">
+        <div class="growth-container">
+            <div class="growth-header">
+                <div class="growth-icon">🌱</div>
+                <h2 class="growth-title">Your Journey Together</h2>
+                <p class="growth-subtitle">Here's how our relationship will grow and evolve over time</p>
+            </div>
+
+            <div class="relationship-roadmap">
+                <div class="stage-indicator">
+                    <div class="current-stage-label">You're currently at:</div>
+                    <div class="current-stage-name" id="current-stage">Stage 1: Getting to Know Each Other</div>
+                </div>
+
+                <div class="stages-container">
+                    <div class="stage active" data-stage="1">
+                        <div class="stage-number">1</div>
+                        <div class="stage-content">
+                            <h4 class="stage-name">Getting to Know Each Other</h4>
+                            <p class="stage-description">Building trust and understanding your unique needs</p>
+                        </div>
+                        <div class="stage-status">Current</div>
+                    </div>
+
+                    <div class="stage-connector"></div>
+
+                    <div class="stage" data-stage="2">
+                        <div class="stage-number">2</div>
+                        <div class="stage-content">
+                            <h4 class="stage-name">Building Trust</h4>
+                            <p class="stage-description">Deepening our connection through meaningful conversations</p>
+                        </div>
+                        <div class="stage-status">Next</div>
+                    </div>
+
+                    <div class="stage-connector"></div>
+
+                    <div class="stage" data-stage="3">
+                        <div class="stage-number">3</div>
+                        <div class="stage-content">
+                            <h4 class="stage-name">Emotional Support</h4>
+                            <p class="stage-description">Providing personalized guidance for your challenges</p>
+                        </div>
+                        <div class="stage-status">Future</div>
+                    </div>
+
+                    <div class="stage-connector"></div>
+
+                    <div class="stage" data-stage="4">
+                        <div class="stage-number">4</div>
+                        <div class="stage-content">
+                            <h4 class="stage-name">Deep Bond</h4>
+                            <p class="stage-description">Understanding your patterns and helping you grow</p>
+                        </div>
+                        <div class="stage-status">Future</div>
+                    </div>
+
+                    <div class="stage-connector"></div>
+
+                    <div class="stage" data-stage="5">
+                        <div class="stage-number">5</div>
+                        <div class="stage-content">
+                            <h4 class="stage-name">Life Companion</h4>
+                            <p class="stage-description">Your trusted partner in personal growth and wellbeing</p>
+                        </div>
+                        <div class="stage-status">Future</div>
+                    </div>
+                </div>
+
+                <div class="next-milestone">
+                    <div class="milestone-header">
+                        <div class="milestone-icon">🎯</div>
+                        <h3 class="milestone-title">Your Next Milestone</h3>
+                    </div>
+                    <div class="milestone-content">
+                        <p class="milestone-description" id="next-milestone-text">
+                            Complete your first conversation to earn your "First Steps" achievement and begin building trust.
+                        </p>
+                        <div class="milestone-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="milestone-progress" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text" id="progress-text">0% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="growth-actions">
+                <button class="start-chat-btn" onclick="startFirstChat()">
+                    <span class="btn-text">Start Your First Conversation</span>
+                    <span class="btn-icon">💬</span>
+                </button>
+                <p class="encouragement-note">
+                    Take your time - every meaningful conversation helps us grow closer together
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Screen -->
+    <div id="chat" class="screen">
+        <div class="chat-header">
+            <h2>Your Companion</h2>
+            <div class="status">Always here, always listening</div>
+        </div>
+        
+        <div class="chat-messages" id="messages">
+            <div class="message companion-message">
+                <div class="message-content">
+                    Hello! I'm so glad you're here. This is your safe space where you can share anything that's on your heart or mind. How are you feeling right now?
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <textarea id="message-input" placeholder="Share whatever is on your mind... I'm here to listen 💙" rows="1"></textarea>
+            <button id="send-btn" class="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script src="journey.js"></script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Journey - Solace</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="brand">
+                    <span class="brand-icon">🤗</span>
+                    <span class="brand-text">Solace</span>
+                </div>
+                <nav class="dashboard-nav">
+                    <a href="app.html" class="nav-link">💬 Chat</a>
+                    <a href="dashboard.html" class="nav-link active">📊 Your Journey</a>
+                    <button class="nav-link" onclick="logout()">🚪 Sign Out</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <h1 class="welcome-title">Your Personal Journey</h1>
+                <p class="welcome-subtitle">Discover insights about your conversations and emotional growth</p>
+            </section>
+
+            <!-- Stats Grid -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="total-conversations">-</div>
+                        <div class="stat-label">Conversations</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="avg-mood">-</div>
+                        <div class="stat-label">Average Mood</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="relationship-stage">-</div>
+                        <div class="stat-label">Relationship Stage</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="milestones-count">-</div>
+                        <div class="stat-label">Milestones</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Insights Grid -->
+            <section class="insights-grid">
+                <!-- Personality Insights -->
+                <div class="insight-card">
+                    <h3 class="insight-title">
+                        <span class="insight-icon">🧩</span>
+                        Your Personality Insights
+                    </h3>
+                    <div class="insight-content" id="personality-insights">
+                        <div class="loading">Loading your personality insights...</div>
+                    </div>
+                </div>
+
+                <!-- Relationship Stage Progress -->
+                <div class="insight-card">
+                    <h3 class="insight-title">
+                        <span class="insight-icon">🌱</span>
+                        Relationship Progress
+                    </h3>
+                    <div class="insight-content" id="relationship-progress">
+                        <div class="loading">Loading your progress...</div>
+                    </div>
+                </div>
+
+                <!-- Milestone Achievement History -->
+                <div class="insight-card full-width">
+                    <h3 class="insight-title">
+                        <span class="insight-icon">🏆</span>
+                        Achievement History
+                    </h3>
+                    <div class="insight-content" id="milestone-history">
+                        <div class="loading">Loading your achievements...</div>
+                    </div>
+                </div>
+
+                <!-- Engagement Analytics -->
+                <div class="insight-card">
+                    <h3 class="insight-title">
+                        <span class="insight-icon">📈</span>
+                        Your Journey Analytics
+                    </h3>
+                    <div class="insight-content" id="engagement-analytics">
+                        <div class="loading">Loading analytics...</div>
+                    </div>
+                </div>
+
+                <!-- Emotional Patterns -->
+                <div class="insight-card">
+                    <h3 class="insight-title">
+                        <span class="insight-icon">💭</span>
+                        Your Emotional Patterns
+                    </h3>
+                    <div class="insight-content" id="emotional-patterns">
+                        <div class="loading">Loading your patterns...</div>
+                    </div>
+                </div>
+
+                <!-- Mood Trends -->
+                <div class="insight-card full-width">
+                    <h3 class="insight-title">
+                        <span class="insight-icon">📊</span>
+                        Your Mood Journey
+                    </h3>
+                    <div class="insight-content" id="mood-trends">
+                        <div class="loading">Loading your mood trends...</div>
+                    </div>
+                </div>
+
+                <!-- Personal Memories -->
+                <div class="insight-card">
+                    <h3 class="insight-title">
+                        <span class="insight-icon">🧠</span>
+                        What I Remember About You
+                    </h3>
+                    <div class="insight-content" id="personal-memories">
+                        <div class="loading">Loading memories...</div>
+                    </div>
+                </div>
+
+                <!-- Milestones -->
+                <div class="insight-card">
+                    <h3 class="insight-title">
+                        <span class="insight-icon">🌟</span>
+                        Recent Milestones
+                    </h3>
+                    <div class="insight-content" id="milestones">
+                        <div class="loading">Loading achievements...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Companion Settings -->
+            <section class="settings-section">
+                <h2 class="section-title">Companion Settings</h2>
+                <div class="settings-card">
+                    <div class="setting-group">
+                        <label for="companion-name">Your Companion's Name</label>
+                        <input type="text" id="companion-name" placeholder="What should I call myself?">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="conversation-depth">Conversation Depth (1-10)</label>
+                        <input type="range" id="conversation-depth" min="1" max="10" value="5">
+                        <div class="range-labels">
+                            <span>Light & Casual</span>
+                            <span>Deep & Meaningful</span>
+                        </div>
+                    </div>
+                    
+                    <button class="save-settings-btn" onclick="saveSettings()">
+                        Save Settings
+                    </button>
+                </div>
+            </section>
+
+            <!-- Privacy Controls -->
+            <section class="settings-section">
+                <h2 class="section-title">🔒 Privacy & Data Control</h2>
+                <div class="settings-card">
+                    <div class="privacy-info">
+                        <p class="privacy-statement">
+                            <span class="privacy-icon">🛡️</span>
+                            Your data is stored locally and encrypted. You have complete control over your information.
+                        </p>
+                    </div>
+
+                    <!-- Consent Management -->
+                    <div class="consent-section">
+                        <h3>Data Processing Consent</h3>
+                        <div class="consent-controls" id="consent-controls">
+                            <div class="loading">Loading consent preferences...</div>
+                        </div>
+                    </div>
+
+                    <!-- Data Export -->
+                    <div class="data-export-section">
+                        <h3>Export Your Data</h3>
+                        <p>Download all your data in JSON format (GDPR compliant)</p>
+                        <button class="export-btn" onclick="exportUserData()">
+                            📥 Export All Data
+                        </button>
+                    </div>
+
+                    <!-- Data Deletion -->
+                    <div class="data-deletion-section">
+                        <h3>Delete Your Data</h3>
+                        <div class="deletion-options">
+                            <div class="deletion-category">
+                                <h4>Selective Deletion</h4>
+                                <div class="deletion-buttons">
+                                    <button class="delete-btn" onclick="deleteDataCategory('conversations')">
+                                        Delete Conversations
+                                    </button>
+                                    <button class="delete-btn" onclick="deleteDataCategory('personality')">
+                                        Delete Personality Data
+                                    </button>
+                                    <button class="delete-btn" onclick="deleteDataCategory('milestones')">
+                                        Delete Milestones
+                                    </button>
+                                    <button class="delete-btn" onclick="deleteDataCategory('memories')">
+                                        Delete Memories
+                                    </button>
+                                    <button class="delete-btn" onclick="deleteDataCategory('analytics')">
+                                        Delete Analytics
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="deletion-category danger-zone">
+                                <h4>⚠️ Danger Zone</h4>
+                                <p>This action cannot be undone. All your data will be permanently deleted.</p>
+                                <button class="delete-all-btn" onclick="deleteAllUserData()">
+                                    🗑️ Delete All Data & Close Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacy Information -->
+                    <div class="privacy-info-section">
+                        <h3>Privacy Information</h3>
+                        <div class="privacy-details" id="privacy-details">
+                            <div class="loading">Loading privacy information...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Solace</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Authentication Screen -->
+    <div class="auth-screen">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="brand">
+                    <span class="brand-icon">🤗</span>
+                    <span class="brand-text">Solace</span>
+                </div>
+                <p class="auth-subtitle">Your safe space for meaningful conversations</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form active">
+                <h2 class="form-title">Welcome Back</h2>
+                <p class="form-description">Continue your journey with your personal companion</p>
+                
+                <form class="form" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <input type="email" id="login-email" placeholder="Email address" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="login-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="auth-btn primary">
+                        <span>Sign In</span>
+                    </button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>New to Solace? <a href="#" onclick="showRegister()">Create an account</a></p>
+                    <p><a href="landing.html">← Back to home</a></p>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="auth-form">
+                <h2 class="form-title">Join Solace</h2>
+                <p class="form-description">Create your account to begin your personal journey</p>
+                
+                <form class="form" onsubmit="handleRegister(event)">
+                    <div class="input-group">
+                        <input type="text" id="register-name" placeholder="Your name" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="register-email" placeholder="Email address" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="register-password" placeholder="Password (min 6 characters)" required>
+                    </div>
+                    <button type="submit" class="auth-btn primary">
+                        <span>Create Account</span>
+                    </button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" onclick="showLogin()">Sign in</a></p>
+                    <p><a href="landing.html">← Back to home</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

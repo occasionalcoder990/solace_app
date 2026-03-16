@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solace - Your Personal Companion</title>
+    <script>
+        // Redirect to appropriate page
+        const token = localStorage.getItem('solace_token');
+        if (token) {
+            window.location.href = 'app.html';
+        } else {
+            window.location.href = 'landing.html';
+        }
+    </script>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Inter, sans-serif;">
+        <p>Redirecting...</p>
+    </div>
+</body>
+</html>
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="brand">
+                    <span class="brand-icon">🤗</span>
+                    <span class="brand-text">Solace</span>
+                </div>
+                <p class="auth-subtitle">Your safe space for meaningful conversations</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form active">
+                <h2 class="form-title">Welcome Back</h2>
+                <p class="form-description">Continue your journey with your personal companion</p>
+                
+                <form class="form">
+                    <div class="input-group">
+                        <input type="email" id="login-email" placeholder="Email address" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="login-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="auth-btn primary" onclick="handleLogin(event)">
+                        <span>Sign In</span>
+                    </button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>New to Solace? <a href="#" onclick="showRegister()">Create an account</a></p>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="auth-form">
+                <h2 class="form-title">Join Solace</h2>
+                <p class="form-description">Create your account to begin your personal journey</p>
+                
+                <form class="form">
+                    <div class="input-group">
+                        <input type="text" id="register-name" placeholder="Your name" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="register-email" placeholder="Email address" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="register-password" placeholder="Password (min 6 characters)" required>
+                    </div>
+                    <button type="submit" class="auth-btn primary" onclick="handleRegister(event)">
+                        <span>Create Account</span>
+                    </button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" onclick="showLogin()">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Homepage -->
+    <div id="homepage" class="screen">
+        <div class="homepage-container">
+            <!-- Simple Header -->
+            <header class="simple-header">
+                <div class="brand">
+                    <span class="brand-icon">🤗</span>
+                    <span class="brand-text">Solace</span>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" onclick="showAuthScreen('login')">Sign In</button>
+                    <button class="header-btn primary" onclick="showAuthScreen('register')">Get Started</button>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="homepage-main">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="badge-text">Your Safe Space Awaits</span>
+                    </div>
+                    
+                    <h1 class="main-title">
+                        Sometimes you just need someone who 
+                        <span class="highlight">truly listens</span>
+                    </h1>
+                    
+                    <p class="main-description">
+                        Share your thoughts, feelings, and experiences with an AI companion that understands you deeply. No judgment, no pressure—just genuine support whenever you need it.
+                    </p>
+
+                    <div class="trust-indicators">
+                        <div class="trust-item">
+                            <span class="trust-icon">🔒</span>
+                            <span class="trust-text">100% Private</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">🤖</span>
+                            <span class="trust-text">AI-Powered</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">💙</span>
+                            <span class="trust-text">Always Available</span>
+                        </div>
+                    </div>
+
+                    <div class="cta-section">
+                        <button class="main-cta" onclick="showAuthScreen('register')">
+                            <span class="cta-text">Start Your Journey</span>
+                            <span class="cta-icon">✨</span>
+                        </button>
+                        <p class="cta-note">Create your account to begin your personalized experience</p>
+                    </div>
+                </div>
+
+                <!-- Visual Element -->
+                <div class="hero-visual">
+                    <div class="conversation-preview">
+                        <div class="chat-bubble user-bubble">
+                            "I've been feeling really overwhelmed lately..."
+                        </div>
+                        <div class="chat-bubble ai-bubble">
+                            "I hear you. That sounds really difficult. Would you like to talk about what's been weighing on your mind?"
+                        </div>
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Simple Footer -->
+            <footer class="simple-footer">
+                <p class="footer-text">Your conversations are completely private and secure</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Question Flow Screen -->
+    <div id="question-flow" class="screen">
+        <div class="question-header">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <h2 class="question-title">Please answer these questions to help us know you deeply for a truly personal experience</h2>
+        </div>
+
+        <div class="question-container">
+            <div class="question-card active" data-question="0">
+                <h3 class="question-text">What should we call you?</h3>
+                <div class="question-options">
+                    <input type="text" class="text-input" placeholder="Enter your preferred name..." data-type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="question-navigation">
+            <button class="nav-btn prev-btn" onclick="previousQuestion()" style="display: none;">Previous</button>
+            <button class="nav-btn next-btn" onclick="nextQuestion()" disabled>Continue</button>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen">
+        <div class="loading-container">
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <h2 class="loading-title">Creating Your Personal Experience</h2>
+            <p class="loading-subtitle">Analyzing your responses to craft the perfect companion for you...</p>
+            <div class="loading-progress-container">
+                <div class="loading-progress-bar">
+                    <div class="loading-progress-fill"></div>
+                </div>
+            </div>
+            <div class="loading-steps">
+                <div class="step active" data-step="1">
+                    <span class="step-icon">🧠</span>
+                    <span class="step-text">Understanding your personality</span>
+                </div>
+                <div class="step" data-step="2">
+                    <span class="step-icon">💭</span>
+                    <span class="step-text">Analyzing communication style</span>
+                </div>
+                <div class="step" data-step="3">
+                    <span class="step-icon">🤗</span>
+                    <span class="step-text">Personalizing your companion</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Screen -->
+    <div id="chat" class="screen">
+        <div class="chat-header">
+            <h2>Your Companion</h2>
+            <div class="status">Always here, always listening</div>
+        </div>
+        
+        <div class="chat-messages" id="messages">
+            <div class="message companion-message">
+                <div class="message-content">
+                    Hello! I'm so glad you're here. This is your safe space where you can share anything that's on your heart or mind. How are you feeling right now?
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <textarea id="message-input" placeholder="Share whatever is on your mind... I'm here to listen 💙"></textarea>
+            <button id="send-btn" class="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

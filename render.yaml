@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: solace-app
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        generateValue: true
+      - key: PORT
+        value: 10000
+    disk:
+      name: solace-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1

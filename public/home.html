@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Solace</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-screen">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="brand-section">
+                    <div class="brand">
+                        <span class="brand-icon">🤗</span>
+                        <span class="brand-text">Solace</span>
+                    </div>
+                    <p class="welcome-message">Welcome back, <span id="user-name">friend</span>! 💙</p>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" onclick="logout()" title="Sign Out">
+                        <span>🚪</span>
+                        <span>Sign Out</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-container">
+                
+                <!-- Quick Actions Section -->
+                <section class="quick-actions">
+                    <h2 class="section-title">Ready to continue your journey?</h2>
+                    <div class="action-cards">
+                        <div class="action-card primary card-enhanced hover-lift ripple floating" onclick="goToChat()">
+                            <div class="card-icon pulse">💬</div>
+                            <div class="card-content">
+                                <h3 class="gradient-text">Continue Conversation</h3>
+                                <p>Your companion is waiting to listen</p>
+                            </div>
+                            <div class="card-arrow">→</div>
+                        </div>
+                        
+                        <div class="action-card card-enhanced hover-lift ripple glass-effect fade-in fade-in-delay-1" onclick="goToInsights()">
+                            <div class="card-icon">📊</div>
+                            <div class="card-content">
+                                <h3>View Insights</h3>
+                                <p>See your emotional journey</p>
+                            </div>
+                            <div class="card-arrow">→</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stats Overview -->
+                <section class="stats-overview">
+                    <h2 class="section-title">Your Journey So Far</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card glass-effect hover-lift fade-in interactive">
+                            <div class="stat-icon floating">💭</div>
+                            <div class="stat-number gradient-text" id="total-messages">0</div>
+                            <div class="stat-label text-enhanced">Messages Shared</div>
+                        </div>
+                        
+                        <div class="stat-card glass-effect hover-lift fade-in fade-in-delay-1 interactive">
+                            <div class="stat-icon floating">📅</div>
+                            <div class="stat-number gradient-text" id="days-active">0</div>
+                            <div class="stat-label text-enhanced">Days Active</div>
+                        </div>
+                        
+                        <div class="stat-card glass-effect hover-lift fade-in fade-in-delay-2 interactive glow">
+                            <div class="stat-icon pulse">🎭</div>
+                            <div class="stat-number gradient-text" id="current-mood">Peaceful</div>
+                            <div class="stat-label text-enhanced">Current Vibe</div>
+                        </div>
+                        
+                        <div class="stat-card glass-effect hover-lift fade-in fade-in-delay-3 interactive">
+                            <div class="stat-icon floating">🌟</div>
+                            <div class="stat-number gradient-text" id="connection-level">Growing</div>
+                            <div class="stat-label text-enhanced">Connection</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Activity -->
+                <section class="recent-activity">
+                    <h2 class="section-title">Recent Highlights</h2>
+                    <div class="activity-feed" id="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-icon">✨</div>
+                            <div class="activity-content">
+                                <p class="activity-text">Welcome to your personal space! Start a conversation to see your journey unfold.</p>
+                                <span class="activity-time">Just now</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Settings -->
+                <section class="quick-settings">
+                    <h2 class="section-title">Personalize Your Experience</h2>
+                    <div class="settings-grid">
+                        <div class="setting-card" onclick="updateCompanionName()">
+                            <div class="setting-icon">🤗</div>
+                            <div class="setting-content">
+                                <h3>Companion Name</h3>
+                                <p id="companion-name-display">Solace</p>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card" onclick="updateCommunicationStyle()">
+                            <div class="setting-icon">💬</div>
+                            <div class="setting-content">
+                                <h3>Communication Style</h3>
+                                <p id="communication-style-display">Gentle & Caring</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="/home.js"></script>
+</body>
+</html>

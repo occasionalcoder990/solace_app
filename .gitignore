@@ -1,0 +1,8 @@
+node_modules/
+.env
+companion.db
+sessions.db
+coverage/
+exports/
+*.log
+delete-user.js
