@@ -2,10 +2,20 @@ const OpenAI = require('openai');
 
 class AIService {
     constructor(personalizationService = null) {
-        this.openai = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY
-        });
+        const apiKey = process.env.OPENAI_API_KEY;
+        if (!apiKey) {
+            console.warn('⚠️  OPENAI_API_KEY not set - AI features will be unavailable until configured');
+            this.openai = null;
+        } else {
+            this.openai = new OpenAI({ apiKey });
+        }
         this.personalizationService = personalizationService;
+    }
+
+    _ensureOpenAI() {
+        if (!this.openai) {
+            throw new Error('OpenAI API key is not configured. Please set the OPENAI_API_KEY environment variable.');
+        }
     }
 
     /**
@@ -561,6 +571,7 @@ Remember: You're not just an AI - you're ${name}'s trusted companion who truly k
      */
     async generatePersonalizedWelcome(user, personalityInsights = null) {
         try {
+            this._ensureOpenAI();
             const name = user.name || 'friend';
             const companionName = user.companion_name || 'Solace';
             
@@ -725,6 +736,7 @@ Create a personalized welcome message that makes ${name} feel like you already u
      */
     async generateAdaptiveResponse(message, user, personalityInsights = null, conversationHistory = []) {
         try {
+            this._ensureOpenAI();
             // Use personality-driven system prompt
             const systemPrompt = await this.generatePersonalityDrivenSystemPrompt(user, null, personalityInsights);
             
@@ -818,6 +830,7 @@ Create a personalized welcome message that makes ${name} feel like you already u
         console.log('🧠 Personality insights available:', personalityInsights ? personalityInsights.length : 0);
         
         try {
+            this._ensureOpenAI();
             // Always use personality-driven system prompt for enhanced personalization
             // This ensures onboarding-derived context is included in every response
             const systemPrompt = await this.generatePersonalityDrivenSystemPrompt(user, userInsights, personalityInsights);
@@ -1551,6 +1564,7 @@ ge - User's message
      */
     async generateAdaptiveResponse(message, user, personalityInsights = null, conversationHistory = []) {
         try {
+            this._ensureOpenAI();
             // Use personality-driven system prompt
             const systemPrompt = await this.generatePersonalityDrivenSystemPrompt(user, null, personalityInsights);
             

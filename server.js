@@ -35,6 +35,13 @@ const DB_DIR = process.env.NODE_ENV === 'production' ? '/opt/render/project/src/
 const DB_PATH = path.join(DB_DIR, 'companion.db');
 const SESSIONS_DB_PATH = path.join(DB_DIR, 'sessions.db');
 
+// Ensure data directory exists (for Render persistent disk)
+const fs = require('fs');
+if (!fs.existsSync(DB_DIR)) {
+  fs.mkdirSync(DB_DIR, { recursive: true });
+  console.log('📁 Created data directory:', DB_DIR);
+}
+
 const db = new sqlite3.Database(DB_PATH, (err) => {
   if (err) {
     console.error('❌ Database connection failed:', err.message);
@@ -418,6 +425,11 @@ const authenticateToken = (req, res, next) => {
 // Routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Health check for Render
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // Authentication Routes
