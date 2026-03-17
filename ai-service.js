@@ -786,10 +786,10 @@ Create a personalized welcome message that makes ${name} feel like you already u
             const completion = await this.openai.chat.completions.create({
                 model: 'gpt-4',
                 messages: messages,
-                max_tokens: 400,
-                temperature: 0.9,
-                presence_penalty: 0.8,
-                frequency_penalty: 0.8
+                max_tokens: 700,
+                temperature: 0.85,
+                presence_penalty: 0.4,
+                frequency_penalty: 0.3
             });
             
             return completion.choices[0].message.content.trim();
@@ -856,151 +856,56 @@ Create a personalized welcome message that makes ${name} feel like you already u
         try {
             this._ensureOpenAI();
             // Always use personality-driven system prompt for enhanced personalization
-            // This ensures onboarding-derived context is included in every response
             const systemPrompt = await this.generatePersonalityDrivenSystemPrompt(user, userInsights, personalityInsights);
             
-            // Build conversation context with enhanced personalization
+            // Build conversation context - keep it clean and focused
             const messages = [
                 { role: 'system', content: systemPrompt }
             ];
             
-            // Add recent conversation history for context (last 10 messages for better continuity)
-            const recentHistory = conversationHistory.slice(-10);
+            // Add recent conversation history for context (last 6 messages for continuity without overload)
+            const recentHistory = conversationHistory.slice(-6);
             recentHistory.forEach(conv => {
                 messages.push({ role: 'user', content: conv.message });
                 messages.push({ role: 'assistant', content: conv.response });
             });
             
-            // Add explicit context awareness instruction
-            if (recentHistory.length > 0) {
-                const lastExchange = recentHistory[recentHistory.length - 1];
-                messages.push({
-                    role: 'system',
-                    content: `CONTEXT AWARENESS: You just had this exchange:
-User: "${lastExchange.message}"
-You: "${lastExchange.response}"
-
-The user's next message will likely be a follow-up to this conversation. Maintain continuity and remember what you just discussed. If they ask "how" or "but how" or similar follow-up questions, they're referring to your previous advice or suggestions.`
-                });
-            }
-            
-            // Add personality-specific response instruction based on insights
-            const personalityInstruction = this.buildPersonalityResponseInstruction(personalityInsights, user);
-            if (personalityInstruction) {
-                messages.push({
-                    role: 'system',
-                    content: personalityInstruction
-                });
-            }
-            
-            // Add reflective response requirement
+            // Single focused instruction that reinforces the response approach
             messages.push({
                 role: 'system',
-                content: `RESPONSE APPROACH FOR THIS MESSAGE:
+                content: `CRITICAL RESPONSE RULES FOR THIS MESSAGE:
 
-Respond as a psychological companion, not an advice machine. Follow this flow:
+You MUST write at least 3-4 substantial paragraphs. One-liners are FORBIDDEN.
 
-1. ACKNOWLEDGE what they shared - show you genuinely understand the emotional core
-2. Give INSIGHT and SUBSTANCE on the SAME topic - go deep, explain the psychology, elaborate (this should be the bulk of your response)
-3. VALIDATE their feelings - normalize their experience
-4. Offer a SOLUTION or perspective if relevant - something concrete and specific to them
-5. Ask ONE follow-up question at the END that stays on the same topic
+Follow this exact structure:
+- Paragraph 1: Acknowledge what they said. Show you heard the emotional core.
+- Paragraph 2-3: Give DEEP INSIGHT on the SAME topic they raised. Explain the psychology. Connect it to a pattern or concept. This is the MOST IMPORTANT part - elaborate, explain WHY they feel this way, what's happening beneath the surface.
+- Paragraph 4: Validate their feelings, then ask ONE follow-up question that stays on their topic.
 
-CRITICAL: Your response must be at least 60% substance/insight. Do NOT give a one-liner then ask a question. Give real content first.
-Stay on THEIR topic. Do not pivot to something new.
-Write in warm, natural paragraphs. NO numbered lists. NO bullet points. NO "Summary:" sections.
-Sound like a thoughtful human, not a self-help article.
-Keep responses focused and conversational but with real depth.`
+DO NOT change the subject. DO NOT give generic advice lists. DO NOT write bullet points.
+Write like a wise friend having a real conversation - warm, direct, substantive.
+Your response should be at least 150 words of real content.`
             });
             
-            // Strong anti-repetition instruction
-            if (recentHistory.length > 0) {
-                const recentResponses = recentHistory.map(conv => conv.response).join('\n---\n');
-                messages.push({ 
-                    role: 'system', 
-                    content: `CRITICAL ANTI-REPETITION INSTRUCTION:
-
-Previous responses you've given:
-${recentResponses}
-
-You MUST NOT repeat any of these responses or use similar phrasing. Requirements:
-1. Use completely different words and sentence structures
-2. Approach the topic from a fresh angle
-3. Show different aspects of your personality
-4. Reference different memories or insights from their onboarding
-5. Ask different types of questions
-6. Use varied emotional tones and expressions
-7. Be spontaneous and authentic - surprise them!
-
-If this is a similar message to before, respond in a completely different way. Show growth in your relationship!` 
-                });
-            }
-            
-            // Add current message with personality adaptation context
-            const adaptedMessage = this.addPersonalityContext(message, personalityInsights, user);
-            
-            // Check if this is a follow-up question and add context
-            const followUpWords = ['how', 'but how', 'what do you mean', 'can you explain', 'i don\'t understand', 'but', 'why', 'what'];
-            const isFollowUp = followUpWords.some(word => message.toLowerCase().includes(word)) && message.length < 50;
-            
-            if (isFollowUp && recentHistory.length > 0) {
-                const lastResponse = recentHistory[recentHistory.length - 1].response;
-                messages.push({ 
-                    role: 'user', 
-                    content: `${adaptedMessage} 
-
-[CONTEXT: This is a follow-up to your previous response. Continue the conversation naturally - go deeper on the SAME topic, offer more insight, elaborate on what you said before. Stay on topic and give substance.]` 
-                });
-            } else {
-                messages.push({ 
-                    role: 'user', 
-                    content: `${adaptedMessage} [Timestamp: ${Date.now()}]` 
-                });
-            }
+            // Add the user's actual message - clean, no metadata noise
+            messages.push({ 
+                role: 'user', 
+                content: message
+            });
             
             console.log('🚀 Calling OpenAI with', messages.length, 'messages');
-            console.log('📝 Messages being sent to OpenAI:');
-            messages.forEach((msg, index) => {
-                console.log(`${index + 1}. ${msg.role}: ${msg.content.substring(0, 100)}...`);
-            });
             
             const completion = await this.openai.chat.completions.create({
                 model: 'gpt-4',
                 messages: messages,
-                max_tokens: 600,
-                temperature: 1.0, // Maximum creativity
-                presence_penalty: 1.0, // Maximum penalty for repetition
-                frequency_penalty: 1.0, // Maximum penalty for frequent words
-                top_p: 0.9, // Nucleus sampling for diversity
-                seed: Math.floor(Math.random() * 1000000) // Random seed for variety
+                max_tokens: 700,
+                temperature: 0.85,
+                presence_penalty: 0.4,
+                frequency_penalty: 0.3
             });
-            console.log('✨ OpenAI response received:', completion.choices[0].message.content.substring(0, 50) + '...');
+            console.log('✨ OpenAI response received');
             
-            const response = completion.choices[0].message.content.trim();
-            
-            // Additional check: if response is too similar to recent ones, try again
-            if (recentHistory.length > 0) {
-                const similarity = this.checkSimilarity(response, recentHistory.map(h => h.response));
-                if (similarity > 0.7) {
-                    console.log('Response too similar, regenerating...');
-                    // Try again with even higher randomness and personality emphasis
-                    const retryCompletion = await this.openai.chat.completions.create({
-                        model: 'gpt-4',
-                        messages: [
-                            ...messages,
-                            { role: 'system', content: 'The previous response was too similar. Be completely different and creative! Reference their unique personality insights from onboarding in a fresh way.' }
-                        ],
-                        max_tokens: 400,
-                        temperature: 1.2,
-                        presence_penalty: 1.2,
-                        frequency_penalty: 1.2,
-                        seed: Math.floor(Math.random() * 1000000)
-                    });
-                    return retryCompletion.choices[0].message.content.trim();
-                }
-            }
-            
-            return response;
+            return completion.choices[0].message.content.trim();
             
         } catch (error) {
             console.error('OpenAI API Error:', error);
@@ -1611,10 +1516,10 @@ ge - User's message
             const completion = await this.openai.chat.completions.create({
                 model: 'gpt-4',
                 messages: messages,
-                max_tokens: 400,
-                temperature: 0.9,
-                presence_penalty: 0.8,
-                frequency_penalty: 0.8
+                max_tokens: 700,
+                temperature: 0.85,
+                presence_penalty: 0.4,
+                frequency_penalty: 0.3
             });
             
             return completion.choices[0].message.content.trim();
