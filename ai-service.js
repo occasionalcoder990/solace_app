@@ -913,12 +913,9 @@ Your response should be at least 150 words of real content.`
             console.error('OpenAI Error Status:', error.status || 'N/A');
             console.error('OpenAI Error Code:', error.code || 'N/A');
             
-            // Return a meaningful error response instead of a fake greeting
+            // Return a meaningful error response that includes debug info
             const name = user.name || 'friend';
-            if (error.message && error.message.includes('API key')) {
-                return `I'm having trouble connecting to my thinking engine right now, ${name}. This is a temporary issue on my end. Could you try sending your message again in a moment?`;
-            }
-            return `I appreciate you sharing that, ${name}. I'm experiencing a brief connection issue right now, but I don't want you to feel unheard. Could you try sending that again? I really want to give you a thoughtful response.`;
+            return `I'm sorry ${name}, I hit a technical issue processing your message. (Error: ${error.message ? error.message.substring(0, 100) : 'Unknown'}). Please try sending your message again - this is usually temporary.`;
         }
     }
 
