@@ -355,6 +355,15 @@ body::before {
     transition: width 0.8s ease;
 }
 
+.progress-counter {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #667eea;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
 .question-title {
     font-size: 2.2rem;
     color: #2d3748;

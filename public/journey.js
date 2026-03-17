@@ -320,8 +320,12 @@ class JourneyApp {
 
     updateProgress() {
         const progressFill = document.querySelector('.progress-fill');
+        const progressCounter = document.getElementById('progress-counter');
         const progress = ((this.currentQuestion + 1) / psychologicalQuestions.length) * 100;
         progressFill.style.width = `${progress}%`;
+        if (progressCounter) {
+            progressCounter.textContent = `Question ${this.currentQuestion + 1} of ${psychologicalQuestions.length}`;
+        }
     }
 
     updateNavigation() {
