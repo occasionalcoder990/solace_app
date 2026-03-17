@@ -187,6 +187,8 @@ db.serialize(() => {
   
   // Initialize services after database tables are created
   console.log('🚀 Initializing AI and personalization services...');
+  console.log('🔑 OPENAI_API_KEY status:', process.env.OPENAI_API_KEY ? `SET (starts with ${process.env.OPENAI_API_KEY.substring(0, 7)}...)` : 'NOT SET');
+  console.log('🔑 All env vars with OPENAI:', Object.keys(process.env).filter(k => k.includes('OPENAI')));
   encryptionService = new EncryptionService();
   privacyService = new PrivacyService(db);
   personalizationService = new PersonalizationService(db);
@@ -429,7 +431,15 @@ app.get('/', (req, res) => {
 
 // Health check for Render
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  const apiKey = process.env.OPENAI_API_KEY;
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    openai_key_set: !!apiKey,
+    openai_key_preview: apiKey ? `${apiKey.substring(0, 8)}...${apiKey.substring(apiKey.length - 4)}` : 'NOT SET',
+    ai_service_ready: !!(aiService && aiService.openai),
+    node_env: process.env.NODE_ENV
+  });
 });
 
 // Authentication Routes
