@@ -625,7 +625,7 @@ CRITICAL REQUIREMENTS:
 Create a personalized welcome message that makes ${name} feel like you already understand them and are genuinely excited to be their companion.`;
 
             const completion = await this.openai.chat.completions.create({
-                model: 'gpt-4',
+                model: 'gpt-4o-mini',
                 messages: [
                     { role: 'system', content: welcomePrompt },
                     { role: 'user', content: `Generate my personalized welcome message based on my personality assessment.` }
@@ -784,7 +784,7 @@ Create a personalized welcome message that makes ${name} feel like you already u
             });
             
             const completion = await this.openai.chat.completions.create({
-                model: 'gpt-4',
+                model: 'gpt-4o-mini',
                 messages: messages,
                 max_tokens: 700,
                 temperature: 0.85,
@@ -896,7 +896,7 @@ Your response should be at least 150 words of real content.`
             console.log('🚀 Calling OpenAI with', messages.length, 'messages');
             
             const completion = await this.openai.chat.completions.create({
-                model: 'gpt-4',
+                model: 'gpt-4o-mini',
                 messages: messages,
                 max_tokens: 700,
                 temperature: 0.85,
@@ -908,10 +908,17 @@ Your response should be at least 150 words of real content.`
             return completion.choices[0].message.content.trim();
             
         } catch (error) {
-            console.error('OpenAI API Error:', error);
+            console.error('OpenAI API Error:', error.message);
+            console.error('OpenAI Error Type:', error.constructor.name);
+            console.error('OpenAI Error Status:', error.status || 'N/A');
+            console.error('OpenAI Error Code:', error.code || 'N/A');
             
-            // Fallback to enhanced rule-based response with personality context
-            return this.generatePersonalityAwareFallbackResponse(message, user, userInsights, conversationHistory, personalityInsights);
+            // Return a meaningful error response instead of a fake greeting
+            const name = user.name || 'friend';
+            if (error.message && error.message.includes('API key')) {
+                return `I'm having trouble connecting to my thinking engine right now, ${name}. This is a temporary issue on my end. Could you try sending your message again in a moment?`;
+            }
+            return `I appreciate you sharing that, ${name}. I'm experiencing a brief connection issue right now, but I don't want you to feel unheard. Could you try sending that again? I really want to give you a thoughtful response.`;
         }
     }
 
@@ -1514,7 +1521,7 @@ ge - User's message
             });
             
             const completion = await this.openai.chat.completions.create({
-                model: 'gpt-4',
+                model: 'gpt-4o-mini',
                 messages: messages,
                 max_tokens: 700,
                 temperature: 0.85,
